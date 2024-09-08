@@ -14,6 +14,6 @@ write these commands in your command prompt or powershell
   pip install -r requirements.txt
 
 ## CD To The Right Directory
-  cd <project-directory>
+  cd e_commerce_api
 
 Last thing is to run the server: python manage.py runserver

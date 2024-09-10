@@ -76,9 +76,11 @@ class CustomUserModel(Document):
     def add_room_to_user(self, room):
         self.update(push__chat_rooms=room)
 
+    def set_new_password(self, new_passwrord):
+        self.update(set__password=make_password(new_passwrord))
 
-    # def __str__(self):
-    #     return self.username
+    def __str__(self):
+        return self.username
 
 class CustomProductModel(Document):
     title = StringField(required=True)
@@ -182,7 +184,6 @@ class CustomCartModel(Document):
 class CustomWishListModel(Document):
     user = ReferenceField(CustomUserModel, required=True, reverse_delete_rule=CASCADE)
     items = ListField(ReferenceField(CustomProductModel), default=[])
-    # items = ListField(ReferenceField(CustomProductModel, reverse_delete_rule=PULL))
 
     meta = {
         'collection': 'wishlist',

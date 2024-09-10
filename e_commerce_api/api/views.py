@@ -1,7 +1,7 @@
 # from rest_framework.generics import 
 # from rest_framework.generics import ListAPIView
 from django.contrib.auth.hashers import check_password
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from .serializer import (CustomUserSerializer, CustomProductSerializer, CustomCartSerializer,
             CustomUserModel, CustomProductModel, CustomCartModel, CustomWishListSerializer,
@@ -104,7 +104,6 @@ class ForgotPasswordView(APIView):
             return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
         user = CustomUserModel.objects.get(email=email)
         token = GenerateUserTokens(user["id"])["access"]
-        print(token)
 
         reset_link = f"https://localhost:3000/?{token}"
         subject = "Forgot password"
@@ -128,7 +127,7 @@ class ResetPasswordView(APIView):
         new_password = request.data.get("new_password", None)
         if not new_password:
             return Response({"error": "New password is required"}, status=status.HTTP_400_BAD_REQUEST)
-        request.user.update(set__password=new_password)
+        request.user.set_new_password(new_password)
         return Response({
             "message": "password reset successfully"
         }, status=status.HTTP_200_OK)
@@ -153,12 +152,6 @@ class AddProductView(APIView):
         product_image = request.data.get("image", None)
         product_category = request.data.get("category", None)
         product_subCategory = request.data.get("subCategory", None)
-        print("product_name: ", product_name)
-        print(product_description)
-        print(product_price)
-        print(product_image)
-        print(product_category)
-        print(product_subCategory)
         serializer = CustomProductSerializer(data={
             "title": product_name,
             "price": product_price,
@@ -332,9 +325,9 @@ class UpdateProductQuantityView(APIView):
         product_id = request.data.get("product_id", None)
         quantity = request.data.get("quantity", None)
         if not product_id:
-            return Response({"error": "product_id are required"}, status=status.HTTP_400_BAD)
+            return Response({"error": "product_id are required"}, status=status.HTTP_400_BAD_REQUEST)
         if quantity is None:
-            return Response({"error": "the new product quantity are required"}, status=status.HTTP_400_BAD)
+            return Response({"error": "the new product quantity are required"}, status=status.HTTP_400_BAD_REQUEST)
         cart = CustomCartModel.objects.get(user=request.user)
         product = CustomProductModel.objects.get(id=product_id)
         if not quantity:
@@ -577,7 +570,6 @@ class FilterProductsView(APIView):
             Q(category__in=filter_list) | Q(subCategory__in=filter_list)
         ) # this is magic
         products_serializer = CustomProductSerializer(products, many=True)
-        print(products)
         return Response({
             "message": "success",
             "products": products_serializer.data

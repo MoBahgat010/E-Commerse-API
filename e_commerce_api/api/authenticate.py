@@ -25,7 +25,7 @@ class CustomTokenAuthentication(BaseAuthentication):
             except InvalidToken as e:
                 raise AuthenticationFailed("access token is invalid ", str(e))
             except TokenError as e:
-                raise AuthenticationFailed("Error in  token", str(e))
+                raise AuthenticationFailed("expired token", str(e))
 
         elif refresh_token:
             return authenticate_refresh_token(refresh_token)
@@ -37,9 +37,8 @@ class CustomTokenAuthentication(BaseAuthentication):
 def authenticate_refresh_token(refresh_token):
     try:
         validated_refresh_token = RefreshToken(refresh_token)
-        print(validated_refresh_token.get("id", None))
         user_id = validated_refresh_token.get("id", None)
-        # validated_refresh_token.blacklist()
+        validated_refresh_token.blacklist()
         if not user_id:
             raise AuthenticationFailed("Invalid token")
         user = CustomUserModel.objects.get(id=user_id)

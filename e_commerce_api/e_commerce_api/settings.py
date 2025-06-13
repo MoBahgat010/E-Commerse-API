@@ -21,11 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j%%juc#s=!h%60tf%we9%mp1xcv@uf!guh*ididj91qu48o)+3'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -66,41 +63,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-
-# AUTHENTICATION_BACKENDS = (
-#     'django.contrib.auth.backends.ModelBackend',
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# )
-
-# SITE_ID = 2
-
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         'APP': {
-#             'client_id': '307419419042-0ttpjf4bfh1282e49ds7n21d4ssuoahb.apps.googleusercontent.com',
-#             'secret': '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',
-#             'key': ''
-#         },
-#         'SCOPE': [
-#             'profile',
-#             'email',
-#         ],
-#         'AUTH_PARAMS': {
-#             'access_type': 'online',
-#         },
-#         'METHOD': 'oauth2',
-#         'VERIFIED_EMAIL': True,
-#         'VERSION': 'v2',
-#     }
-# }
-
-# REST_USE_JWT = True
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-# }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
@@ -247,13 +209,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-
-# Email Settings
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mbahgat503@gmail.com'
-EMAIL_HOST_PASSWORD = 'tghf uexm xtlk pczr'  # Replace with your actual email password or app-specific password
-DEFAULT_FROM_EMAIL = 'mbahgat503@gmail.com'
